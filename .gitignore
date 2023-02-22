@@ -1,0 +1,15 @@
+# 干掉大于50mb文件，二进制缓存
+*.mdb
+/__pycache__/
+*.mp4
+*.pkg
+*.exe
+*.zip
+*.7z
+*.mp3
+*.rar
+/node_modules/
+bybrid_app
+/unpackage/dist
+HTML+CSS
+.obsidian
