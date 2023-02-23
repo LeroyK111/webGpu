@@ -1,17 +1,17 @@
+// 导入缓冲器,存储顶点，会越来越复杂
 import { initBuffers } from "./init-buffers.js";
+// 开始绘制位置
 import { drawScene } from "./draw-scene.js";
 
 main();
 
-//
-// start here
-//
+// 主函数
 function main() {
   const canvas = document.querySelector("#glcanvas");
-  // Initialize the GL context
+  // 初始化 WebGL 上下文
   const gl = canvas.getContext("webgl");
 
-  // Only continue if WebGL is available and working
+  //确认 WebGL 支持性
   if (gl === null) {
     alert(
       "Unable to initialize WebGL. Your browser or machine may not support it."
@@ -19,12 +19,12 @@ function main() {
     return;
   }
 
-  // Set clear color to black, fully opaque
+  // 使用完全不透明的黑色清除所有图像
   gl.clearColor(0.0, 0.0, 0.0, 1.0);
-  // Clear the color buffer with specified clear color
+  // 用上面指定的颜色清除缓冲区
   gl.clear(gl.COLOR_BUFFER_BIT);
 
-  // Vertex shader program
+  // 顶点着色器
   const vsSource = `
     attribute vec4 aVertexPosition;
     uniform mat4 uModelViewMatrix;
@@ -34,24 +34,24 @@ function main() {
     }
 `;
 
+  // 片段着色器
   const fsSource = `
     void main() {
       gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
     }
   `;
 
-  // Initialize a shader program; this is where all the lighting
-  // for the vertices and so forth is established.
+  // 初始化着色器程序，让 WebGL 知道如何绘制我们的数据
   const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
 
-  // Collect all the info needed to use the shader program.
-  // Look up which attribute our shader program is using
-  // for aVertexPosition and look up uniform locations.
+  // 配置区域, 可以使用
   const programInfo = {
     program: shaderProgram,
+    // 获取顶点属性
     attribLocations: {
       vertexPosition: gl.getAttribLocation(shaderProgram, "aVertexPosition"),
     },
+    // 从gl中,获取统一位置
     uniformLocations: {
       projectionMatrix: gl.getUniformLocation(
         shaderProgram,
@@ -61,30 +61,27 @@ function main() {
     },
   };
 
-  // Here's where we call the routine that builds all the
-  // objects we'll be drawing.
+  // 带入缓冲区
   const buffers = initBuffers(gl);
 
-  // Draw the scene
+  // 绘制场景
   drawScene(gl, programInfo, buffers);
 }
 
-//
-// Initialize a shader program, so WebGL knows how to draw our data
-//
+//初始化着色器程序，让 WebGL 知道如何绘制我们的数据
 function initShaderProgram(gl, vsSource, fsSource) {
+  // 这里是顶点着色器
   const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+  // 片段着色器
   const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
 
-  // Create the shader program
-
+  // 创建着色器程序
   const shaderProgram = gl.createProgram();
   gl.attachShader(shaderProgram, vertexShader);
   gl.attachShader(shaderProgram, fragmentShader);
   gl.linkProgram(shaderProgram);
 
-  // If creating the shader program failed, alert
-
+  // 如果创建失败，则弹窗
   if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
     alert(
       `Unable to initialize the shader program: ${gl.getProgramInfoLog(
@@ -97,23 +94,18 @@ function initShaderProgram(gl, vsSource, fsSource) {
   return shaderProgram;
 }
 
-//
-// creates a shader of the given type, uploads the source and
-// compiles it.
-//
+// 创建指定类型的着色器，上传 source 源码并编译
 function loadShader(gl, type, source) {
+  // 创建一个新的着色器
   const shader = gl.createShader(type);
 
-  // Send the source to the shader object
-
+  // 将源代码发送到着色器
   gl.shaderSource(shader, source);
 
-  // Compile the shader program
-
+  // 一旦着色器获取到源代码, 送入这里编译
   gl.compileShader(shader);
 
-  // See if it compiled successfully
-
+  // 检查是否成功编译了着色器
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
     alert(
       `An error occurred compiling the shaders: ${gl.getShaderInfoLog(shader)}`
@@ -122,5 +114,6 @@ function loadShader(gl, type, source) {
     return null;
   }
 
+  // 编译好，就返回编译的着色器
   return shader;
 }
