@@ -316,7 +316,8 @@ precision mediump int;
 ## ☆常用库
 推荐使用成熟的2D库和3D库，减少GLSL代码书写。不然要写死个人。。。
 
-**统一采用react框架学习，尤其是对于进阶内容而言。**
+ <b style="color: red;">统一采用react框架学习，尤其是对于进阶内容而言。</b>
+
 
 介绍几个常用库：
 https://pixijs.io/
@@ -326,7 +327,9 @@ https://threejs.org/
 后续会补充。。。
 
 ### 2D库
+```
 
+```
 
 
 

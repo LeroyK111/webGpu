@@ -1,20 +1,21 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
 import "./App.less";
+import { Outlet, useLocation } from "react-router-dom";
+import NavBar from "./routers/navbar";
 
 function App() {
-  const [count, setCount] = useState(0);
+  // 对于嵌套路由器，只能使用位置参数。
+  let location = useLocation();
+  // 匹配路由器只适合平行路由器。
 
   return (
     <div className="App">
-      <h1>测试数据: {count}</h1>
-      <img
-        src={reactLogo}
-        alt=""
-        onClick={() => {
-          setCount(count + 1);
-        }}
-      />
+      <div className="navbar">
+        <NavBar></NavBar>
+      </div>
+      <div className="outlet">
+        {location.pathname === "/" ? <h1>首页</h1> : <Outlet></Outlet>}
+      </div>
     </div>
   );
 }

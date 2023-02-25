@@ -1,0 +1,1 @@
+.App{display:flex;flex-direction:row;height:100vh}.App .navbar{flex:5;border-right:2px solid #ccc}.App .outlet{flex:95}
