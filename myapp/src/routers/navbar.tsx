@@ -43,7 +43,7 @@ export default function NavBar() {
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
             className="NavLink"
           >
-            数字孪生
+            Number
           </NavLink>
         </li>
         <li>

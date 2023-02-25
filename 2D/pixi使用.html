@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+  </head>
+  <body>
+    <h1>Hello PixiJS</h1>
+  </body>
+  <script>
+    // 构建对象
+    let app = new PIXI.Application({ width: 640, height: 360 });
+    // 加载canvas子元素
+    document.body.appendChild(app.view);
+
+    // 加载精灵
+    let sprite = PIXI.Sprite.from(
+      "https://pixijs.io/guides/static/images/sample.png"
+    );
+
+    // 将精灵加入舞台
+    app.stage.addChild(sprite);
+
+    // 添加一个变量来计算演示运行的秒数
+    let elapsed = 0.0;
+    // 告诉我们的应用程序的代码器运行一个新的回调每帧，通过从最后一个tick开始的时间
+    // 编写更新循环
+    app.ticker.add((delta) => {
+      // 将时间添加到总运行时间中
+      elapsed += delta;
+      // 根据时间余弦值更新精灵的X位置。我们除以50来放慢动画的速度…
+      sprite.x = 100.0 + Math.cos(elapsed / 50.0) * 100.0;
+    });
+  </script>
+</html>

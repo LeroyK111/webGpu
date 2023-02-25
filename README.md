@@ -318,7 +318,6 @@ precision mediump int;
 
  <b style="color: red;">统一采用react框架学习，尤其是对于进阶内容而言。</b>
 
-
 介绍几个常用库：
 https://pixijs.io/
 https://oasisengine.cn/
@@ -327,9 +326,19 @@ https://threejs.org/
 后续会补充。。。
 
 ### 2D库
-```
+我们以pixijs库为主。
+|主要组成|描述|
+|----|----|
+|渲染器@pixi/core|PixiJS 系统的核心是渲染器，它显示场景图并将其绘制到屏幕上。PixiJS 的默认渲染器是基于 WebGL 的。|
+|容器@pixi/display|创建场景图的主要显示对象：要显示的可渲染对象树，例如精灵、图形和文本。有关更多详细信息，请参见[场景图。](https://pixijs.io/guides/basics/scene-graph.html)|
+|装载机@pixi/loaders|加载器系统提供了用于异步加载图像和音频文件等资源的工具。|
+|定时器@pixi/ticker|Tickers 提供基于时钟的周期性回调。您的游戏更新逻辑通常会响应每帧一次的滴答而运行。您可以同时使用多个代码。|
+|应用@pixi/app| Application 是一个简单的帮助程序，它将 Loader、Ticker 和 Renderer 包装到一个方便易用的对象中。非常适合快速入门、制作原型和构建简单的项目。|
+|交互事件@pixi/interaction| PixiJS 支持基于触摸和鼠标的交互——使对象可点击、触发悬停事件等。|
+|辅助功能@pixi/accessibility|贯穿我们的显示系统的是一组丰富的工具，用于实现键盘和屏幕阅读器的可访问性。|
 
-```
+
+
 
 
 
