@@ -326,7 +326,8 @@ https://threejs.org/
 后续会补充。。。
 
 ### 2D库
-我们以pixijs库为主。
+我们以 pixijs 库为主，尽可能避免webgl原生写法。
+#### pixijs库的框架
 |主要组成|描述|
 |----|----|
 |渲染器@pixi/core|PixiJS 系统的核心是渲染器，它显示场景图并将其绘制到屏幕上。PixiJS 的默认渲染器是基于 WebGL 的。|
@@ -342,9 +343,10 @@ https://threejs.org/
 
 
 
+
+
 ### 3D库
-
-
+我们以Three库为主。
 
 
 
