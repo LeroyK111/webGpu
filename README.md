@@ -338,6 +338,8 @@ https://threejs.org/
 |交互事件@pixi/interaction| PixiJS 支持基于触摸和鼠标的交互——使对象可点击、触发悬停事件等。|
 |辅助功能@pixi/accessibility|贯穿我们的显示系统的是一组丰富的工具，用于实现键盘和屏幕阅读器的可访问性。|
 
+主要步骤：
+
 
 
 
