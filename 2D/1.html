@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+  </head>
+  <body></body>
+  <script>
+    // 舞台
+    const app = new PIXI.Application({ background: "#1099bb" });
+    document.body.appendChild(app.view);
+    // 构建一个新容器
+    const container = new PIXI.Container();
+
+    // 添加容器到舞台
+    app.stage.addChild(container);
+
+    // 创建新纹理
+    const texture = PIXI.Texture.from("https://pixijs.io/guides/static/images/sample.png");
+
+    // 创建一个5x5的网格
+    for (let i = 0; i < 3; i++) {
+      // 创建一个新精灵
+      const bunny = new PIXI.Sprite(texture);
+      // 设置锚点起始点
+      bunny.anchor.set(0.5);
+      // 偏移x
+      bunny.x = (i % 3) * 200;
+      // 便宜y
+      bunny.y = Math.floor(i / 3) * 200;
+      // 容器添加
+      container.addChild(bunny);
+    }
+
+    // 移动容器到中心
+    container.x = app.screen.width / 2;
+    container.y = app.screen.height / 2;
+
+    // 容器中的精灵位置
+    container.pivot.x = container.width / 2;
+    container.pivot.y = container.height / 2;
+
+    // 添加定时器
+    app.ticker.add((delta) => {
+      // 让容器旋转
+      container.rotation -= 0.01 * delta;
+    });    
+  </script>
+</html>
