@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<style>
+  a {
+    color: #666666;
+  }
+
+  a {
+    color: #ffffff;
+  }
+</style>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>测试container的遮盖</title>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+  </head>
+  <body></body>
+  <script>
+    // 生成实例canvas，绑定dom
+    let app = new PIXI.Application({ width: 640, height: 360 });
+    document.body.appendChild(app.view);
+    // 创建任意形状的遮罩对象
+    let frame = new PIXI.Graphics();
+    // 设置背景色
+    frame.beginFill(0x666666);
+    // 遮罩的边框
+    frame.lineStyle({ color: 0xffffff, width: 4, alignment: 0 });
+    // 遮罩左上角xy，和宽高
+    frame.drawRect(0, 0, 208, 208);
+    // 遮罩位置，相对坐标
+    frame.position.set(320 - 104, 180 - 104);
+    // 添加遮罩到舞台
+    app.stage.addChild(frame);
+
+    // 新遮罩，用来做文字遮罩
+    let mask = new PIXI.Graphics();
+    // 设置遮罩
+    mask.beginFill(0xffffff);
+    mask.drawRect(0, 0, 200, 200);
+    // 调用上一次填充
+    mask.endFill();
+
+    // 创建容器
+    let maskContainer = new PIXI.Container();
+    // 设置蒙版以使用上面的图形对象
+    maskContainer.mask = mask;
+    // 容器内添加蒙版
+    maskContainer.addChild(mask);
+    // 容器位置
+    maskContainer.position.set(4, 4);
+    // 遮罩中嵌入容器
+    frame.addChild(maskContainer);
+
+    // 在文字遮罩中，创建上下文
+    let text = new PIXI.Text(
+      "This text will scroll up and be masked, so you can see how masking works.  Lorem ipsum and all that.\n\n" +
+        "You can put anything in the container and it will be masked!",
+      {
+        fontSize: 24,
+        fill: 0x1010ff,
+        wordWrap: true,
+        wordWrapWidth: 180,
+      }
+    );
+    text.x = 10;
+    maskContainer.addChild(text);
+
+    // 定时器
+    let elapsed = 0.0;
+    app.ticker.add((delta) => {
+      // 上下滚动
+      elapsed += delta;
+      text.y = 10 + -100.0 + Math.cos(elapsed / 50.0) * 100.0;
+    });
+  </script>
+</html>

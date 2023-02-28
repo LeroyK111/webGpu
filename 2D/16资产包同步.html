@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+  </head>
+  <body></body>
+  <script>
+    const app = new PIXI.Application({ background: "#1099bb" });
+    document.body.appendChild(app.view);
+
+    // await can only be used inside an async function
+    async function init() {
+      const texture = await PIXI.Assets.load("https://pixijs.io/examples/examples/assets/bunny.png");
+
+      // create a new Sprite from the awaited loaded Texture
+      const bunny = PIXI.Sprite.from(texture);
+
+      // center the sprite's anchor point
+      bunny.anchor.set(0.5);
+
+      // move the sprite to the center of the screen
+      bunny.x = app.screen.width / 2;
+      bunny.y = app.screen.height / 2;
+
+      app.stage.addChild(bunny);
+    }
+
+    // Call that async function
+    init();
+  </script>
+</html>

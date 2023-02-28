@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>初步使用</title>
     <script src="https://pixijs.download/release/pixi.js"></script>
   </head>
   <body></body>
@@ -35,11 +35,11 @@
       container.addChild(bunny);
     }
 
-    // 移动容器到中心
+    // 移动容器到舞台中心
     container.x = app.screen.width / 2;
     container.y = app.screen.height / 2;
 
-    // 容器中的精灵位置
+    // 移动精灵到容器中心
     container.pivot.x = container.width / 2;
     container.pivot.y = container.height / 2;
 

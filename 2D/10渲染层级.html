@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+  </head>
+  <body></body>
+  <script>
+    // 创建实例
+    const app = new PIXI.Application({ width: 640, height: 360 });
+    document.body.appendChild(app.view);
+
+    // 标题文字
+    const label = new PIXI.Text(
+      "Scene Graph:\n\napp.stage\n  ┗ A\n     ┗ B\n     ┗ C\n  ┗ D",
+      { fill: "#ffffff" }
+    );
+    label.position = { x: 300, y: 100 };
+    app.stage.addChild(label);
+
+    // 封装
+    const letters = [];
+    function addLetter(letter, parent, color, pos) {
+      // 方块
+      const bg = new PIXI.Sprite(PIXI.Texture.WHITE);
+      bg.width = 100;
+      bg.height = 100;
+      bg.tint = color;
+      // 方块中的文字
+      const text = new PIXI.Text(letter, { fill: "#ffffff" });
+      text.anchor.set(0.5);
+      text.position = { x: 50, y: 50 };
+
+      // 将方块和文字封装在容器中
+      const container = new PIXI.Container();
+      container.position = pos;
+      container.visible = false;
+      container.addChild(bg, text);
+      parent.addChild(container);
+
+      letters.push(container);
+      return container;
+    }
+
+    // 定义四个容器
+    let a = addLetter("A", app.stage, 0xff0000, { x: 100, y: 100 });
+    let b = addLetter("B", a, 0x00ff00, { x: 20, y: 20 });
+    let c = addLetter("C", a, 0x0000ff, { x: 20, y: 40 });
+    let d = addLetter("D", app.stage, 0xff8800, { x: 140, y: 100 });
+
+    // 随之时间展示他们
+    let elapsed = 0.0;
+    app.ticker.add((delta) => {
+      elapsed += delta / 60.0;
+      if (elapsed >= letters.length) {
+        // 清零重置
+        elapsed = 0.0;
+      }
+      for (let i = 0; i < letters.length; i++) {
+        // 循环展示到第几个
+        letters[i].visible = elapsed >= i;
+      }
+    });
+    // 如果您想重新排序子对象，您可以使用setChildIndex(). 要在父母列表中的给定点添加孩子，请使用addChildAt(). sortableChildren最后，您可以使用该选项并结合设置zIndex每个子项的属性来启用对象子项的自动排序。
+  </script>
+</html>

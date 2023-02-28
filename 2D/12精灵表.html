@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script type="module" src="https://pixijs.download/release/pixi.js"></script>
+  </head>
+  <body></body>
+  <script>
+    import * as PIXI from "pixi.js";
+
+    const app = new PIXI.Application(600, 600, { background: "#1099bb" });
+    document.body.appendChild(app.view);
+
+    // Create object to store sprite sheet data
+        const atlasData = {
+        	frames: {
+        		enemy1: {
+        			frame: { x: 0, y:0, w:32, h:32 },
+        			sourceSize: { w: 32, h: 32 },
+        			spriteSourceSize: { x: 0, y: 0, w: 32, h: 32 }
+        		},
+        		enemy2: {
+        			frame: { x: 32, y:0, w:32, h:32 },
+        			sourceSize: { w: 32, h: 32 },
+        			spriteSourceSize: { x: 0, y: 0, w: 32, h: 32 }
+        		},
+        	},
+        	meta: {
+        		image: 'https://pixijs.io/examples/examples/assets/bunny.png',
+        		format: 'RGBA8888',
+        		size: { w: 128, h: 32 },
+        		scale: 1
+        	},
+        	animations: {
+        		enemy: ['enemy1','enemy2'] //array of frames by name
+        	}
+        }
+
+
+        // Create the SpriteSheet from data and image
+        const spritesheet = new PIXI.Spritesheet(
+        	PIXI.BaseTexture.from(atlasData.meta.image),
+        	atlasData
+        );
+
+        // Generate all the Textures asynchronously
+        await spritesheet.parse();
+
+        // spritesheet is ready to use!
+        const anim = new PIXI.AnimatedSprite(spritesheet.animations.enemy);
+
+        // set the animation speed
+        anim.animationSpeed = 0.1666;
+
+        // play the animation on a loop
+        anim.play();
+
+        // add it to the stage to render
+        app.stage.addChild(anim);
+  </script>
+</html>

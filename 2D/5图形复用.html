@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+  </head>
+  <body></body>
+  <script>
+    // antialias开启抗锯齿
+    const app = new PIXI.Application({ antialias: true });
+    document.body.appendChild(app.view);
+    // 创建一个模板
+    let template = new PIXI.Graphics();
+    // Add a circle
+    template.beginFill(0x3500fa, 1);
+    template.drawCircle(100, 100, 50);
+    
+    for (let i = 0; i < 5; i++) {
+      // 这里就是可复用了
+      let duplicate = new PIXI.Graphics(template.geometry);
+      duplicate.position.x = i * 40;
+      duplicate.position.y = i * 40;
+      app.stage.addChild(duplicate);      
+    }
+  </script>
+</html>

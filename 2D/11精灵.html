@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+  </head>
+  <body></body>
+  <script>
+
+    // 创建实例
+    const app = new PIXI.Application({ background: "#1099bb" });
+    document.body.appendChild(app.view);
+
+    // create a new Sprite from an image path
+    const bunny = PIXI.Sprite.from("https://pixijs.io/examples/examples/assets/bunny.png");
+
+    // center the sprite's anchor point
+    bunny.anchor.set(0.5);
+
+    // move the sprite to the center of the screen
+    bunny.x = app.screen.width / 2;
+    bunny.y = app.screen.height / 2;
+
+    app.stage.addChild(bunny);
+
+    // Listen for animate update
+    app.ticker.add((delta) => {
+      // just for fun, let's rotate mr rabbit a little
+      // delta is 1 if running at 100% performance
+      // creates frame-independent transformation
+      bunny.rotation += 0.1 * delta;
+    });
+
+
+
+  </script>
+</html>

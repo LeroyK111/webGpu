@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+  </head>
+  <body></body>
+  <script>
+    const app = new PIXI.Application({ background: "#1099bb" });
+    document.body.appendChild(app.view);
+
+    const container = new PIXI.Container();
+    app.stage.addChild(container);
+
+    // 纹理
+    const texture = PIXI.Texture.from(
+      "https://pixijs.io/guides/static/images/sample.png"
+    );
+
+    for (let i = 0; i < 2; i++) {
+      const bunny = new PIXI.Sprite(texture);
+      bunny.x = (i % 5) * 30;
+      bunny.y = Math.floor(i / 5) * 30;
+      bunny.rotation = Math.random() * (Math.PI * 2);
+      container.addChild(bunny);
+    }
+
+    // 基础纹理
+    const brt = new PIXI.BaseRenderTexture(
+      // 宽度
+      300,
+      // 高度
+      300,
+      // 缩放模式，平滑缩放
+      PIXI.SCALE_MODES.LINEAR,
+      // 像素比
+      1
+    );
+    // 基础
+    const rt = new PIXI.RenderTexture(brt);
+    const sprite = new PIXI.Sprite(rt);
+
+    sprite.x = 450;
+    sprite.y = 60;
+    app.stage.addChild(sprite);
+
+    /*
+     * 这里就是手动渲染
+     */
+    container.x = 100;
+    container.y = 60;
+
+    app.ticker.add(() => {
+      app.renderer.render(container, rt);
+    });
+  </script>
+</html>
