@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        position: relative;
+      }
+
+      span {
+        z-index: 100;
+        color: red;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <span>hello three.js</span>
+  </body>
+  <script async type="module" crossorigin="anonymous">
+    import * as THREE from "/webGpu/3D/node_modules/three/src/Three.js";
+    // 这个包埋得深
+
+    // 官方更喜欢DOM + CSS写文字，而不是用threejs。
+
+    // 渲染器
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // 摄像机
+    const camera = new THREE.PerspectiveCamera(
+      45,
+      window.innerWidth / window.innerHeight,
+      1,
+      500
+    );
+    camera.position.set(0, 0, 100);
+    camera.lookAt(0, 0, 0);
+
+    // 创建场景
+    const scene = new THREE.Scene();
+
+    // 渲染
+    renderer.render(scene, camera);
+  </script>
+</html>

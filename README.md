@@ -1822,22 +1822,221 @@ PIXI.Assets.init({manifest: "path/manifest.json"});
 
 ### 3D库
 我们以Three.js库为主。
+安装方式：
+1.npm包
+```html
+npm i three
+<script async type="module">
+    import * as THREE from "/webGpu/3D/node_modules/three/src/Three.js";
+</script>
+```
+2.CDN：
+```html
+<script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
+<script type="module">import three from '[https://cdn.jsdelivr.net/npm/three@0.150.1/+esm](https://cdn.jsdelivr.net/npm/three@0.150.1/+esm)'</script>
+```
+3.CDN映射，这个真的少用
+```html
+<script type="importmap"> { "imports": { "three": "https://unpkg.com/three@<version>/build/three.module.js" } } </script>
+```
+兼容性检查，需要引入webgl
+```js
+if (WebGL.isWebGLAvailable()) { 
+// Initiate function or other initializations here 
+	animate();
+} 
+else { 
+		const warning = WebGL.getWebGLErrorMessage();
+		document.getElementById('container').appendChild(warning); 
+	 }
+```
+
+#### 渲染器
+有多种，官方推荐WebGLRenderer
+```js
+// 渲染器
+    const renderer = new THREE.WebGLRenderer();
+    // 渲染器宽高设置
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    // 加入canvas
+    document.body.appendChild(renderer.domElement);
+```
+
+#### 摄像机
+camera存在多种摄像机，推荐PerspectiveCamera
+```js
+const camera = new THREE.PerspectiveCamera(
+
+      // 视野角度（FOV）
+
+      75,
+
+      // 长宽比（aspect ratio）
+
+      window.innerWidth / window.innerHeight,
+
+      // 近截面（near）
+
+      0.1,
+
+      // 远截面（far）
+
+      1000
+
+    );
+```
+
+#### 场景
+```js
+const scene = new THREE.Scene();
+```
+#### 画线几何
+用到了渲染缓冲器。
+```html
+<script async type="module" crossorigin="anonymous">
+
+    import * as THREE from "/webGpu/3D/node_modules/three/src/Three.js";
+
+  
+
+    // 渲染器
+
+    const renderer = new THREE.WebGLRenderer();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    document.body.appendChild(renderer.domElement);
+
+  
+
+    // 摄像机
+
+    const camera = new THREE.PerspectiveCamera(
+
+      45,
+
+      window.innerWidth / window.innerHeight,
+
+      1,
+
+      500
+
+    );
+
+    camera.position.set(0, 0, 100);
+
+    camera.lookAt(0, 0, 0);
+
+  
+
+    // 创建场景
+
+    const scene = new THREE.Scene();
+
+    // 定义一个材质
+
+    const material = new THREE.LineBasicMaterial({ color: 0x0000ff });
+
+    // 创建几何体
+
+    const points = [];
+
+    points.push(new THREE.Vector3(-10, 0, 0));
+
+    points.push(new THREE.Vector3(0, 10, 0));
+
+    points.push(new THREE.Vector3(10, 0, 0));
+
+  
+
+    // 使用缓冲器，将三个点存储起来
+
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+    // 使用连线
+
+    const line = new THREE.Line( geometry, material );
+
+    // 加入场景
+
+    scene.add( line );
+
+    // 渲染
+
+    renderer.render( scene, camera );
+
+  </script>
+
+```
+#### 创建文字
+官方推荐直接写。。。
+![](Pasted%20image%2020230301224146.png)
+
+
+#### 载入3D模型
+目前，3D模型的格式有成千上万种可供选择，但每一种格式都具有不同的目的、用途以及复杂性。 虽然 [three.js已经提供了多种导入工具](https://github.com/mrdoob/three.js/tree/dev/examples/jsm/loaders)， 但是选择正确的文件格式以及工作流程将可以节省很多时间，以及避免遭受很多挫折。某些格式难以使用，或者实时体验效率低下，或者目前尚未得到完全支持。
+#####  推荐模型格式
+如果有可能的话，我们推荐使用glTF（gl传输格式）。.GLB和.GLTF是这种格式的这两种不同版本， 都可以被很好地支持。由于glTF这种格式是专注于在程序运行时呈现三维物体的，所以它的传输效率非常高，且加载速度非常快。 功能方面则包括了网格、材质、纹理、皮肤、骨骼、变形目标、动画、灯光和摄像机。
+
+##### 免费模型网站
+公共领域的glTF文件可以在网上找到，例如 [Sketchfab](https://sketchfab.com/models?features=downloadable&sort_by=-likeCount&type=models)，或者很多工具包含了glTF的导出功能：
+-   [Blender](https://www.blender.org/) by the Blender Foundation
+-   [Substance Painter](https://www.allegorithmic.com/products/substance-painter) by Allegorithmic
+-   [Modo](https://www.foundry.com/products/modo) by Foundry
+-   [Toolbag](https://www.marmoset.co/toolbag/) by Marmoset
+-   [Houdini](https://www.sidefx.com/products/houdini/) by SideFX
+-   [Cinema 4D](https://labs.maxon.net/?p=3360) by MAXON
+-   [COLLADA2GLTF](https://github.com/KhronosGroup/COLLADA2GLTF) by the Khronos Group
+-   [FBX2GLTF](https://github.com/facebookincubator/FBX2glTF) by Facebook
+-   [OBJ2GLTF](https://github.com/AnalyticalGraphicsInc/obj2gltf) by Analytical Graphics Inc
+-   …and [还有更多](http://github.khronos.org/glTF-Project-Explorer/)
+
+倘若你所喜欢的工具不支持glTF格式，请考虑向该工具的作者请求glTF导出功能， 或者在[the glTF roadmap thread](https://github.com/KhronosGroup/glTF/issues/1051)贴出你的想法。
+当glTF不可用的时候，诸如FBX、OBJ或者COLLADA等等其它广受欢迎的格式在Three.js中也是可以使用、并且定期维护的。
+
+待续...
+
+
+
+
+
+
+#### 进阶
+
+##### 更新场景
+
+##### 处理废弃
+
+
+##### VR内容
+
+
+##### 后期处理
+
+##### 矩阵变换
+
+
+##### 动画系统
+
+
+#### 进阶操作
 
 
 
 
 ## ★进阶
 本篇章，主要是进阶的玩法。尤其是在AI和大数据的背景下，对于数据可视化的要求越来越高。
-尤其是图形界面的高交互性，报表和图形高度耦合，对于前端要求也越来越高。
+尤其是图形界面的高交互性，报表和图形融合，对于前端要求也越来越高。
 
 ### GIS地理信息开发
 这是常规的用法，地理信息是大数据的重要组成部分。如果想要呈现炫酷的效果，一副地图不可避免。
 
+另开仓库展示。地址：[GIS](https://github.com/LeroyK111/gisDisplayBoard)
 
 ### 数字孪生
 对生产制造业的加工制造管理流程，进行可视化监管。也是我最喜欢的领域，工业互联网的基础，就是定制化开发工厂的中控平台。
 
-
+另开仓库展示。地址：[Industrial digital show panel](https://github.com/LeroyK111/IndustrialDigitalPanel)
 
 ### 游戏开发
 JavaScript当然可以做游戏开发。作为很多2D游戏引擎基本编辑语言，3D游戏引擎由于光追盛行，为了追求更好性能，一般都是C/C++，C#，Rust等语言。
@@ -1852,5 +2051,5 @@ JavaScript当然可以做游戏开发。作为很多2D游戏引擎基本编辑�
 混音：音效师等。
 引擎：给资源赋予脚本，光追渲染等，打包成为一个游戏。
 
-
-
+另开仓库展示。地址：[雷霆战机](https://github.com/LeroyK111/ThunderCross)
+3D游戏性能并不好，请注意。
