@@ -1994,39 +1994,226 @@ const scene = new THREE.Scene();
 倘若你所喜欢的工具不支持glTF格式，请考虑向该工具的作者请求glTF导出功能， 或者在[the glTF roadmap thread](https://github.com/KhronosGroup/glTF/issues/1051)贴出你的想法。
 当glTF不可用的时候，诸如FBX、OBJ或者COLLADA等等其它广受欢迎的格式在Three.js中也是可以使用、并且定期维护的。
 
-待续...
+###### ★大坑
+必须调用animate动画，才能显示模型，还需要光照。
 
+```html
+<!DOCTYPE html>
 
+<html lang="zh-CN">
 
+  <head>
 
+    <meta charset="UTF-8" />
 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-#### 进阶
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-##### 更新场景
+    <title>Document</title>
 
-##### 处理废弃
+    <style>
 
+      * {
 
-##### VR内容
+        padding: 0;
 
+        margin: 0;
 
-##### 后期处理
+        box-sizing: border-box;
 
-##### 矩阵变换
+      }
 
+    </style>
 
-##### 动画系统
+  </head>
 
+  <body></body>
 
-#### 进阶操作
+  
 
+  <script
 
+    async
 
+    src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
 
+  ></script>
+
+  <!-- 映射器，恶心 -->
+
+  <script type="importmap">
+
+    {
+
+      "imports": {
+
+        "three": "/webGpu/3D/node_modules/three/build/three.module.js",
+
+        "three/addons/": "/webGpu/3D/node_modules/three/examples/jsm/"
+
+      }
+
+    }
+
+  </script>
+
+  
+
+  <script type="module">
+
+    import * as THREE from "three";
+
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+  
+
+    // console.log("GLTFLoader", GLTFLoader);
+
+    // 渲染器
+
+    const renderer = new THREE.WebGLRenderer();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+  
+
+    renderer.setClearColor(0x808080);
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    renderer.shadowMap.enabled = true;
+
+    renderer.gammaOuput = true;
+
+    document.body.appendChild(renderer.domElement);
+
+  
+
+    // 摄像机
+
+    const camera = new THREE.PerspectiveCamera(
+
+      90,
+
+      window.innerWidth / window.innerHeight,
+
+      0.1,
+
+      100
+
+    );
+
+    camera.position.set(0, 0, 1);
+
+  
+
+    // 创建场景
+
+    const scene = new THREE.Scene();
+
+  
+
+    // 我们还需要光照，
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+
+    directionalLight.position.set(2, 2, 5);
+
+    scene.add(directionalLight);
+
+  
+
+    const loader = new GLTFLoader();
+
+    loader.load(
+
+      "/webGpu/3D/assets/shiba.glb",
+
+      function (glb) {
+
+        const root = glb.scene;
+
+        root.position.set(0,0,0)
+
+        scene.add(root);
+
+        console.log(glb);
+
+      },
+
+      (xhr) => {
+
+        console.log(xhr);
+
+      },
+
+      function (error) {
+
+        console.error(error);
+
+      }
+
+    );
+
+  
+
+    // 如果不调用动画，则不会显示模型。。。
+
+    function animate(params) {
+
+      requestAnimationFrame(animate);
+
+      renderer.render(scene, camera);
+
+    }
+
+  
+
+    animate()
+
+  </script>
+
+</html>
+```
+###### 常见问题
+1.视口标签，目的是限制用户对页面的大小和缩放。
+```html
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+```
+2.如何在窗口调整大小时，保持场景比例不变。
+```js
+visible_height = 2 * Math.tan( ( Math.PI / 180 ) * camera.fov / 2 ) * distance_from_camera;
+```
+3.渲染时有时会将面剔除，记得改一下材料设定。
+```js
+material.side = THREE.DoubleSide
+```
+4.教程链接：three.js入门
+-   [Three.js Fundamentals starting lesson](https://threejs.org/manual/#en/fundamentals)
+-   [Beginning with 3D WebGL](https://codepen.io/rachsmith/post/beginning-with-3d-webgl-pt-1-the-scene) by [Rachel Smith](https://codepen.io/rachsmith/).
+-   [Animating scenes with WebGL and three.js](https://www.august.com.au/blog/animating-scenes-with-webgl-three-js/)
+-   [Discover three.js](https://discoverthreejs.com/)
+-   [Collection of tutorials](http://blog.cjgammon.com/) by [CJ Gammon](http://www.cjgammon.com/).
+-   [Glossy spheres in three.js](https://medium.com/soffritti.pierfrancesco/glossy-spheres-in-three-js-bfd2785d4857).
+-   [Interactive 3D Graphics](https://www.udacity.com/course/cs291) - a free course on Udacity that teaches the fundamentals of 3D Graphics, and uses three.js as its coding tool.
+-   [Aerotwist](https://aerotwist.com/tutorials/) tutorials by [Paul Lewis](https://github.com/paullewis/).
+-   [Three.js Bookshelf](https://discourse.threejs.org/t/three-js-bookshelf/2468) - Looking for more resources about three.js or computer graphics in general? Check out the selection of literature recommended by the community.
+5.常用工具
+-   [physgl.org](https://github.com/tbensky/physgl) - JavaScript front-end with wrappers to three.js, to bring WebGL graphics to students learning physics and math.
+-   [Whitestorm.js](https://whsjs.readme.io/) – Modular three.js framework with AmmoNext physics plugin.
+-   [Three.js Inspector](http://zz85.github.io/zz85-bookmarklets/threelabs.html)
+-   [ThreeNodes.js](http://idflood.github.io/ThreeNodes.js/).
+-   [three.quarks](https://github.com/Alchemist0823/three.quarks) - 针对 three.js 高速粒子特效系统
+-   [vscode shader](https://marketplace.visualstudio.com/items?itemName=slevesque.shader) - Syntax highlighter for shader language.  
+    [vscode comment-tagged-templates](https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates) - Syntax highlighting for tagged template strings using comments to shader language, like: glsl.js.
+-   [WebXR-emulator-extension](https://github.com/MozillaReality/WebXR-emulator-extension)
 ## ★进阶
 本篇章，主要是进阶的玩法。尤其是在AI和大数据的背景下，对于数据可视化的要求越来越高。
 尤其是图形界面的高交互性，报表和图形融合，对于前端要求也越来越高。
+更新场景scene，删除对象obj，创建VR内容，后期处理，矩阵变换，动画系统等等，都会另开一个仓库。
+
+地址：公众号迁移中。。。
 
 ### GIS地理信息开发
 这是常规的用法，地理信息是大数据的重要组成部分。如果想要呈现炫酷的效果，一副地图不可避免。
@@ -2052,4 +2239,4 @@ JavaScript当然可以做游戏开发。作为很多2D游戏引擎基本编辑�
 引擎：给资源赋予脚本，光追渲染等，打包成为一个游戏。
 
 另开仓库展示。地址：[雷霆战机](https://github.com/LeroyK111/ThunderCross)
-3D游戏性能并不好，请注意。
+3D游戏性能并不好，请注意。。。单纯的玩玩就挺好。
