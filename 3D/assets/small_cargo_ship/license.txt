@@ -1,0 +1,11 @@
+Model Information:
+* title:	Small Cargo Ship
+* source:	https://sketchfab.com/3d-models/small-cargo-ship-6362d3e9b11e4396aaafa854c3aa6f06
+* author:	Styx (https://sketchfab.com/588276)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Small Cargo Ship" (https://sketchfab.com/3d-models/small-cargo-ship-6362d3e9b11e4396aaafa854c3aa6f06) by Styx (https://sketchfab.com/588276) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
