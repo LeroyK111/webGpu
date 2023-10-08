@@ -2219,11 +2219,13 @@ material.side = THREE.DoubleSide
 这是常规的用法，地理信息是大数据的重要组成部分。如果想要呈现炫酷的效果，一副地图不可避免。
 
 另开仓库展示。地址：[GIS](https://github.com/LeroyK111/gisDisplayBoard)
+留个坑位。。。
 
 ### 数字孪生
 对生产制造业的加工制造管理流程，进行可视化监管。也是我最喜欢的领域，工业互联网的基础，就是定制化开发工厂的中控平台。
 
 另开仓库展示。地址：[Industrial digital show panel](https://github.com/LeroyK111/IndustrialDigitalPanel)
+留个坑位。。。
 
 ### 游戏开发
 JavaScript当然可以做游戏开发。作为很多2D游戏引擎基本编辑语言，3D游戏引擎由于光追盛行，为了追求更好性能，一般都是C/C++，C#，Rust等语言。
