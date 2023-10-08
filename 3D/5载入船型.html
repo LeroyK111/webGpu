@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
@@ -93,3 +94,100 @@
     animate()
   </script>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body></body>
+
+  <script
+    async
+    src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
+  ></script>
+  <!-- 映射器，恶心 -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "/webGpu/3D/node_modules/three/build/three.module.js",
+        "three/addons/": "/webGpu/3D/node_modules/three/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+    // console.log("GLTFLoader", GLTFLoader);
+    // 渲染器
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    renderer.setClearColor(0x808080);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.gammaOuput = true;
+    document.body.appendChild(renderer.domElement);
+
+    // 摄像机
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      100
+    );
+    camera.position.set(0, 0, 1);
+
+    // 创建场景
+    const scene = new THREE.Scene();
+
+    // 我们还需要光照，
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+    directionalLight.position.set(0, 0, 100);
+    scene.add(directionalLight);
+
+    const loader = new GLTFLoader();
+
+    let root;
+
+    loader.load(
+      "/webGpu/3D/assets/small_cargo_ship/scene.gltf",
+      function (glb) {
+        root = glb.scene;
+        root.position.set(0,0,0)
+        root.scale.set(.7, .7, .7)
+        root.rotation.set(.30, 0, 0)
+        scene.add(root);
+        // console.log(glb);
+      },
+      (xhr) => {
+        console.log(xhr);
+      },
+      function (error) {
+        console.error(error);
+      }
+    );
+
+    // 如果不调用动画，则不会显示模型。。。
+    function animate(params) {
+      requestAnimationFrame(animate);
+      root.rotation.y +=.01
+      renderer.render(scene, camera);
+    }
+
+    animate()
+  </script>
+</html>
+>>>>>>> 22ba171124f2bc4c6d85100406aca3bb0b7013dc
